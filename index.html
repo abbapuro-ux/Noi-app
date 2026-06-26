@@ -81,6 +81,57 @@ button{
 button:active{
   transform:scale(0.97);
 }
+
+/* ================= MODAL APP STYLE ================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.0);
+  backdrop-filter: blur(0px);
+  align-items:center;
+  justify-content:center;
+  transition: all 0.25s ease;
+}
+
+.modal.show{
+  background:rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
+
+.modal-box{
+  background:rgba(20,20,30,0.95);
+  padding:22px;
+  border-radius:22px;
+  width:80%;
+  max-width:340px;
+  text-align:center;
+  color:white;
+
+  transform: scale(0.7);
+  opacity:0;
+  transition: all 0.25s ease;
+}
+
+.modal-box.show{
+  transform: scale(1);
+  opacity:1;
+}
+
+.modal-text{
+  font-size:18px;
+  margin-bottom:15px;
+}
+
+.close-btn{
+  background:rgba(255,255,255,0.1);
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  color:white;
+}
 </style>
 </head>
 
@@ -94,31 +145,26 @@ button:active{
 
 <div class="grid">
 
-<!-- CONTATORE -->
 <div class="card">
 <div class="small">💞 Insieme dal 2 marzo 2024</div>
 <div class="big" id="counter"></div>
 </div>
 
-<!-- FREQUENTAZIONE -->
 <div class="card">
 <div class="small">💌 Ci frequentiamo dal 14 gennaio 2024</div>
 <div class="big">Sempre più vicini ❤️</div>
 </div>
 
-<!-- SUSHI -->
 <div class="card">
 <div class="small">🍣 Sushi Day (ogni 2 del mese)</div>
 <div class="big" id="sushi"></div>
 </div>
 
-<!-- MESSAGGIO -->
 <div class="card">
 <div class="small">💭 Messaggio per te</div>
 <div class="big" id="msg"></div>
 </div>
 
-<!-- INTERAZIONE -->
 <div class="card">
 <div class="small">🎮 Interazioni</div>
 
@@ -133,12 +179,47 @@ button:active{
 </div>
 </div>
 
+<!-- ================= MODAL ================= -->
+<div id="modal" class="modal">
+  <div id="modalBox" class="modal-box">
+    <div id="modalText" class="modal-text"></div>
+    <button onclick="closeModal()" class="close-btn">Chiudi</button>
+  </div>
+</div>
+
 <script>
 
 const startDate = new Date("2024-03-02");
 let loveCounter = 0;
 
-// CONTATORE LIVE
+// ================= MODAL =================
+function openModal(text){
+  const modal = document.getElementById("modal");
+  const box = document.getElementById("modalBox");
+
+  document.getElementById("modalText").innerText = text;
+
+  modal.style.display = "flex";
+
+  setTimeout(()=>{
+    modal.classList.add("show");
+    box.classList.add("show");
+  },10);
+}
+
+function closeModal(){
+  const modal = document.getElementById("modal");
+  const box = document.getElementById("modalBox");
+
+  modal.classList.remove("show");
+  box.classList.remove("show");
+
+  setTimeout(()=>{
+    modal.style.display = "none";
+  },250);
+}
+
+// ================= CONTATORE =================
 function updateCounter(){
   const now = new Date();
   const diff = now - startDate;
@@ -153,7 +234,7 @@ function updateCounter(){
     `${days}g ${hours}h ${mins}m ${secs}s ❤️`;
 }
 
-// SUSHI DAY
+// ================= SUSHI =================
 function updateSushi(){
   const now = new Date();
   const day = now.getDate();
@@ -169,7 +250,7 @@ function updateSushi(){
   }
 }
 
-// MESSAGGI
+// ================= MESSAGGI =================
 const frasi = [
 "Sei la mia casa ❤️",
 "Ogni secondo con te vale ❤️",
@@ -183,18 +264,18 @@ function updateMsg(){
   frasi[Math.floor(Math.random()*frasi.length)];
 }
 
-// BOTTONI
+// ================= BOTTONI =================
 function loveClick(){
   loveCounter++;
   document.getElementById("loveCount").innerText =
   `Ti amo premuto ${loveCounter} volte ❤️`;
 
-  alert("Ti amo più di tutto ❤️");
+  openModal("Ti amo più di tutto ❤️");
 }
 
 function sushiClick(){
   const day = new Date().getDate();
-  alert(day===2 ? "OGGI SUSHI 🍣❤️" : "Non ancora sushi day 😋");
+  openModal(day===2 ? "OGGI SUSHI 🍣❤️" : "Non ancora sushi day 😋");
 }
 
 function gift(){
@@ -204,7 +285,7 @@ function gift(){
     "Non cambierei noi ❤️",
     "Sei perfetta per me ❤️"
   ];
-  alert(gifts[Math.floor(Math.random()*gifts.length)]);
+  openModal(gifts[Math.floor(Math.random()*gifts.length)]);
 }
 
 function secret(){
@@ -214,10 +295,10 @@ function secret(){
     "Con te è tutto più bello ❤️",
     "Ti amo davvero tanto ❤️"
   ];
-  alert(msgs[Math.floor(Math.random()*msgs.length)]);
+  openModal(msgs[Math.floor(Math.random()*msgs.length)]);
 }
 
-// INIT
+// ================= INIT =================
 updateCounter();
 updateSushi();
 updateMsg();
