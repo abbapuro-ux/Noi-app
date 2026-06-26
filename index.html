@@ -12,6 +12,7 @@ body{
   background: radial-gradient(circle at top, #111827, #0b1220);
   color:white;
   text-align:center;
+  overflow:hidden;
 }
 
 .container{
@@ -20,22 +21,13 @@ body{
   padding:25px;
 }
 
-.header{
-  font-size:30px;
-  font-weight:700;
-  margin-top:10px;
-}
+.header{font-size:30px;font-weight:700;}
+.sub{opacity:0.6;font-size:13px;margin-bottom:15px;}
 
-.sub{
-  opacity:0.6;
-  font-size:13px;
-  margin-bottom:20px;
-}
+.page{display:none;}
+.page.active{display:block;}
 
-.grid{
-  display:grid;
-  gap:14px;
-}
+.grid{display:grid;gap:14px;}
 
 .card{
   background: rgba(255,255,255,0.06);
@@ -44,36 +36,10 @@ body{
   padding:16px;
   backdrop-filter: blur(12px);
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  cursor:pointer;
+  transition:0.2s;
 }
 
-.card:active{
-  transform: scale(0.97);
-  box-shadow:0 5px 15px rgba(0,0,0,0.6);
-}
-
-.big{
-  font-size:22px;
-  font-weight:600;
-  margin-top:6px;
-}
-
-.small{
-  font-size:12px;
-  opacity:0.6;
-}
-
-.heart{
-  font-size:28px;
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.2);}
-  100%{transform:scale(1);}
-}
+.card:active{transform:scale(0.97);}
 
 button{
   margin:5px;
@@ -82,250 +48,182 @@ button{
   border:none;
   background: rgba(255,255,255,0.12);
   color:white;
-  font-weight:600;
 }
 
-button:active{
-  transform:scale(0.97);
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-  display:none;
+/* bottom bar */
+.nav{
   position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.0);
-  backdrop-filter: blur(0px);
-  align-items:center;
-  justify-content:center;
-  transition: all 0.25s ease;
-}
-
-.modal.show{
+  bottom:0;
+  left:0;
+  width:100%;
+  display:flex;
+  justify-content:space-around;
   background:rgba(0,0,0,0.6);
   backdrop-filter: blur(10px);
+  padding:10px 0;
 }
 
-.modal-box{
-  background:rgba(20,20,30,0.95);
-  padding:22px;
-  border-radius:22px;
-  width:80%;
-  max-width:340px;
-  text-align:center;
-  color:white;
-
-  transform: scale(0.7);
-  opacity:0;
-  transition: all 0.25s ease;
+.nav button{
+  background:none;
+  font-size:14px;
 }
 
-.modal-box.show{
-  transform: scale(1);
-  opacity:1;
+/* cuori */
+.heart-float{
+  position:fixed;
+  bottom:0;
+  font-size:20px;
+  animation:up 2s linear forwards;
 }
 
-.modal-text{
-  font-size:18px;
-  margin-bottom:15px;
-}
-
-.close-btn{
-  background:rgba(255,255,255,0.1);
-  border:none;
-  padding:10px 14px;
-  border-radius:12px;
-  color:white;
+@keyframes up{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-500px);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
+<!-- PAGES -->
+<div class="page active" id="home">
+
 <div class="container">
 
-<div class="heart">❤️</div>
-<div class="header">Edoardo & Giada</div>
-<div class="sub">la nostra piccola app privata</div>
+<div class="header">Edoardo & Giada ❤️</div>
+<div class="sub">la nostra app</div>
 
 <div class="grid">
 
-<div class="card" onclick="openModal(counterText)">
-<div class="small">💞 Insieme dal 2 marzo 2024</div>
-<div class="big" id="counter"></div>
+<div class="card">
+💞 Insieme dal 2 marzo 2024<br>
+<div id="counter"></div>
 </div>
 
 <div class="card">
-<div class="small">💌 Ci frequentiamo dal 14 gennaio 2024</div>
-<div class="big">Sempre più vicini ❤️</div>
-</div>
-
-<div class="card" onclick="sushiClick()">
-<div class="small">🍣 Sushi Day (ogni 2 del mese)</div>
-<div class="big" id="sushi"></div>
-</div>
-
-<div class="card" onclick="openModal(currentMsg)">
-<div class="small">💭 Messaggio per te</div>
-<div class="big" id="msg"></div>
+💭 Messaggio del giorno<br>
+<div id="msg"></div>
 </div>
 
 <div class="card">
-<div class="small">🎮 Interazioni</div>
-
-<button onclick="loveClick()">Ti amo ❤️</button>
-<button onclick="gift()">Regalo 🎁</button>
-<button onclick="secret()">Messaggio 💌</button>
-
-<div class="small" id="loveCount"></div>
+🎮 Interazioni<br>
+<button onclick="love()">Ti amo ❤️</button>
+<button onclick="music()">Musica 🎵</button>
 </div>
 
 </div>
 </div>
 
-<!-- ================= MODAL ================= -->
-<div id="modal" class="modal">
-  <div id="modalBox" class="modal-box">
-    <div id="modalText" class="modal-text"></div>
-    <button onclick="closeModal()" class="close-btn">Chiudi</button>
-  </div>
+</div>
+
+<!-- SUSHI PAGE -->
+<div class="page" id="sushi">
+<div class="container">
+<div class="header">🍣 Sushi Day</div>
+<div id="sushiText"></div>
+</div>
+</div>
+
+<!-- SECRET -->
+<div class="page" id="secret">
+<div class="container">
+<div class="header">🔐 Segreto</div>
+
+<input id="code" placeholder="inserisci codice" style="padding:10px;border-radius:10px;">
+<br><br>
+<button onclick="check()">Entra</button>
+
+<div id="secretMsg"></div>
+</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+<button onclick="show('home')">Home</button>
+<button onclick="show('sushi')">🍣</button>
+<button onclick="show('secret')">🔐</button>
 </div>
 
 <script>
 
-const startDate = new Date("2024-03-02");
+const start = new Date("2024-03-02");
+const frasi = ["Sei la mia casa ❤️","Ti amo ❤️","Sempre noi ❤️","Sei tutto ❤️"];
 
-let loveCounter = 0;
-let counterText = "";
-let currentMsg = "";
+let musicOn = false;
 
-/* ================= MODAL ================= */
-
-function openModal(text){
-  const modal = document.getElementById("modal");
-  const box = document.getElementById("modalBox");
-
-  document.getElementById("modalText").innerText = text;
-
-  modal.style.display = "flex";
-
-  setTimeout(()=>{
-    modal.classList.add("show");
-    box.classList.add("show");
-  },10);
-}
-
-function closeModal(){
-  const modal = document.getElementById("modal");
-  const box = document.getElementById("modalBox");
-
-  modal.classList.remove("show");
-  box.classList.remove("show");
-
-  setTimeout(()=>{
-    modal.style.display = "none";
-  },250);
-}
-
-/* ================= CONTATORE ================= */
-
+/* counter */
 function updateCounter(){
-  const now = new Date();
-  const diff = now - startDate;
-
-  const s = Math.floor(diff / 1000);
-  const days = Math.floor(s / 86400);
-  const hours = Math.floor((s % 86400) / 3600);
-  const mins = Math.floor((s % 3600) / 60);
-  const secs = s % 60;
-
-  counterText = `${days}g ${hours}h ${mins}m ${secs}s ❤️`;
-
-  document.getElementById("counter").innerText = counterText;
+  const d = new Date() - start;
+  const s = Math.floor(d/1000);
+  const days = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  document.getElementById("counter").innerText =
+  `${days}g ${h}h ${m}m`;
 }
 
-/* ================= SUSHI ================= */
+/* msg */
+function updateMsg(){
+  document.getElementById("msg") =
+  frasi[Math.floor(Math.random()*frasi.length)];
+}
 
+/* pages */
+function show(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* sushi */
 function updateSushi(){
   const now = new Date();
   const day = now.getDate();
 
-  if(day === 2){
-    document.getElementById("sushi").innerText = "OGGI SUSHI 🍣❤️";
-  } else {
-    let next = new Date(now.getFullYear(), now.getMonth(), 2);
-    if(day > 2) next = new Date(now.getFullYear(), now.getMonth()+1, 2);
+  if(day===2){
+    document.getElementById("sushiText").innerText="OGGI SUSHI 🍣❤️";
+  }else{
+    let next = new Date(now.getFullYear(),now.getMonth(),2);
+    if(day>2) next = new Date(now.getFullYear(),now.getMonth()+1,2);
 
-    const diff = Math.ceil((next-now)/(1000*60*60*24));
-    document.getElementById("sushi").innerText = `Mancano ${diff} giorni 🍣`;
+    let diff = Math.ceil((next-now)/86400000);
+    document.getElementById("sushiText")="Mancano "+diff+" giorni";
   }
 }
 
-function sushiClick(){
-  const now = new Date();
-  const day = now.getDate();
-
-  openModal(day===2
-    ? "OGGI SUSHI 🍣❤️"
-    : "Mancano ancora giorni al sushi 😋"
-  );
+/* love + hearts */
+function love(){
+  for(let i=0;i<8;i++){
+    let h=document.createElement("div");
+    h.className="heart-float";
+    h.innerText="❤️";
+    h.style.left=Math.random()*100+"%";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2000);
+  }
 }
 
-/* ================= MESSAGGI ================= */
-
-const frasi = [
-"Sei la mia casa ❤️",
-"Ogni secondo con te vale ❤️",
-"Ti sceglierei sempre ❤️",
-"Non smetto mai di pensarti ❤️",
-"Sei la cosa più bella ❤️"
-];
-
-function updateMsg(){
-  currentMsg = frasi[Math.floor(Math.random()*frasi.length)];
-  document.getElementById("msg").innerText = currentMsg;
+/* music (fake toggle) */
+function music(){
+  musicOn=!musicOn;
+  alert(musicOn?"Musica ON 🎵":"Musica OFF");
 }
 
-/* ================= BOTTONI ================= */
-
-function loveClick(){
-  loveCounter++;
-  document.getElementById("loveCount").innerText =
-  `Ti amo premuto ${loveCounter} volte ❤️`;
-
-  openModal("Ti amo più di tutto ❤️");
+/* secret */
+function check(){
+  let val=document.getElementById("code").value;
+  if(val==="02032024"){
+    document.getElementById("secretMsg").innerText="❤️ corretto ❤️";
+  }else{
+    document.getElementById("secretMsg").innerText="sbagliato";
+  }
 }
 
-function gift(){
-  const gifts = [
-    "Ti amo più di ieri ❤️",
-    "Sei il mio regalo ❤️",
-    "Non cambierei noi ❤️",
-    "Sei perfetta per me ❤️"
-  ];
-  openModal(gifts[Math.floor(Math.random()*gifts.length)]);
-}
-
-function secret(){
-  const msgs = [
-    "Sei tutto per me ❤️",
-    "Non smetterò mai di sceglierti ❤️",
-    "Con te è tutto più bello ❤️",
-    "Ti amo davvero tanto ❤️"
-  ];
-  openModal(msgs[Math.floor(Math.random()*msgs.length)]);
-}
-
-/* ================= INIT ================= */
-
+/* init */
 updateCounter();
-updateSushi();
 updateMsg();
+updateSushi();
 
 setInterval(updateCounter,1000);
-setInterval(updateSushi,60000);
 
 </script>
 
