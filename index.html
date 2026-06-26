@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Noi ❤️</title>
+<title>Noi 💓</title>
 
 <style>
 body{
@@ -21,15 +21,29 @@ body{
   padding:25px;
 }
 
-.header{font-size:30px;font-weight:700;}
-.sub{opacity:0.6;font-size:13px;margin-bottom:15px;}
+.header{
+  font-size:30px;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform 0.2s ease;
+}
+
+.header:active{
+  transform: scale(0.98);
+}
+
+.sub{
+  opacity:0.6;
+  font-size:13px;
+  margin-bottom:15px;
+}
 
 .page{display:none;}
 .page.active{display:block;}
 
 .grid{display:grid;gap:14px;}
 
-/* ================= IOS TOUCH FEEL ================= */
+/* ================= CARD IOS FEEL ================= */
 
 .card{
   background: rgba(255,255,255,0.06);
@@ -40,7 +54,6 @@ body{
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
   cursor:pointer;
-  will-change: transform;
 }
 
 .card:active{
@@ -49,7 +62,8 @@ body{
   box-shadow:0 5px 18px rgba(0,0,0,0.6);
 }
 
-/* bottoni */
+/* ================= BUTTON IOS FEEL ================= */
+
 button{
   margin:5px;
   padding:10px 12px;
@@ -58,6 +72,7 @@ button{
   background: rgba(255,255,255,0.12);
   color:white;
   transition: transform 0.12s ease, filter 0.12s ease;
+  cursor:pointer;
 }
 
 button:active{
@@ -65,7 +80,7 @@ button:active{
   filter: brightness(1.2);
 }
 
-/* bottom bar */
+/* bottom nav */
 .nav{
   position:fixed;
   bottom:0;
@@ -105,8 +120,8 @@ button:active{
 
 <div class="container">
 
-<div class="header">Edoardo & Giada ❤️</div>
-<div class="sub">la nostra app</div>
+<div class="header" onclick="heartTap()">Edoardo 💓 Giada</div>
+<div class="sub">noi due, sempre 💓</div>
 
 <div class="grid">
 
@@ -162,11 +177,19 @@ button:active{
 <script>
 
 const start = new Date("2024-03-02");
-const frasi = ["Sei la mia casa ❤️","Ti amo ❤️","Sempre noi ❤️","Sei tutto ❤️"];
+
+const frasi = [
+"Sei la mia casa ❤️",
+"Ti amo ❤️",
+"Sempre noi 💓",
+"Sei tutto per me 💓",
+"Con te è diverso ❤️"
+];
 
 let musicOn = false;
+let heartCount = 0;
 
-/* counter */
+/* COUNTER */
 function updateCounter(){
   const d = new Date() - start;
   const s = Math.floor(d/1000);
@@ -178,35 +201,35 @@ function updateCounter(){
   `${days}g ${h}h ${m}m`;
 }
 
-/* msg FIXED */
+/* MSG */
 function updateMsg(){
   document.getElementById("msg").innerText =
   frasi[Math.floor(Math.random()*frasi.length)];
 }
 
-/* pages */
+/* PAGES */
 function show(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-/* sushi FIXED */
+/* SUSHI */
 function updateSushi(){
   const now = new Date();
   const day = now.getDate();
 
-  if(day===2){
-    document.getElementById("sushiText").innerText="OGGI SUSHI 🍣❤️";
+  if(day === 2){
+    document.getElementById("sushiText").innerText = "OGGI SUSHI 🍣💓";
   } else {
-    let next = new Date(now.getFullYear(),now.getMonth(),2);
-    if(day>2) next = new Date(now.getFullYear(),now.getMonth()+1,2);
+    let next = new Date(now.getFullYear(), now.getMonth(), 2);
+    if(day > 2) next = new Date(now.getFullYear(), now.getMonth()+1, 2);
 
     let diff = Math.ceil((next-now)/86400000);
-    document.getElementById("sushiText").innerText="Mancano "+diff+" giorni";
+    document.getElementById("sushiText") = "Mancano "+diff+" giorni 🍣";
   }
 }
 
-/* LOVE (no overflow fix) */
+/* LOVE */
 function love(){
   for(let i=0;i<6;i++){
     let h=document.createElement("div");
@@ -218,20 +241,29 @@ function love(){
   }
 }
 
-/* music */
+/* MUSIC */
 function music(){
   musicOn=!musicOn;
   alert(musicOn?"Musica ON 🎵":"Musica OFF");
 }
 
-/* secret */
+/* SECRET */
 function check(){
   let val=document.getElementById("code").value;
   document.getElementById("secretMsg").innerText =
-  (val==="02032024") ? "❤️ corretto ❤️" : "sbagliato";
+  (val==="02032024") ? "💓 corretto 💓" : "sbagliato";
 }
 
-/* init */
+/* HEART EASTER EGG */
+function heartTap(){
+  heartCount++;
+  if(heartCount === 5){
+    alert("💓 noi due");
+    heartCount = 0;
+  }
+}
+
+/* INIT */
 updateCounter();
 updateMsg();
 updateSushi();
