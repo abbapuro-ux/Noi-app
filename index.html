@@ -44,6 +44,13 @@ body{
   padding:16px;
   backdrop-filter: blur(12px);
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor:pointer;
+}
+
+.card:active{
+  transform: scale(0.97);
+  box-shadow:0 5px 15px rgba(0,0,0,0.6);
 }
 
 .big{
@@ -82,7 +89,7 @@ button:active{
   transform:scale(0.97);
 }
 
-/* ================= MODAL APP STYLE ================= */
+/* ================= MODAL ================= */
 
 .modal{
   display:none;
@@ -145,7 +152,7 @@ button:active{
 
 <div class="grid">
 
-<div class="card">
+<div class="card" onclick="openModal(counterText)">
 <div class="small">💞 Insieme dal 2 marzo 2024</div>
 <div class="big" id="counter"></div>
 </div>
@@ -155,12 +162,12 @@ button:active{
 <div class="big">Sempre più vicini ❤️</div>
 </div>
 
-<div class="card">
+<div class="card" onclick="sushiClick()">
 <div class="small">🍣 Sushi Day (ogni 2 del mese)</div>
 <div class="big" id="sushi"></div>
 </div>
 
-<div class="card">
+<div class="card" onclick="openModal(currentMsg)">
 <div class="small">💭 Messaggio per te</div>
 <div class="big" id="msg"></div>
 </div>
@@ -169,7 +176,6 @@ button:active{
 <div class="small">🎮 Interazioni</div>
 
 <button onclick="loveClick()">Ti amo ❤️</button>
-<button onclick="sushiClick()">Sushi 🍣</button>
 <button onclick="gift()">Regalo 🎁</button>
 <button onclick="secret()">Messaggio 💌</button>
 
@@ -190,9 +196,13 @@ button:active{
 <script>
 
 const startDate = new Date("2024-03-02");
-let loveCounter = 0;
 
-// ================= MODAL =================
+let loveCounter = 0;
+let counterText = "";
+let currentMsg = "";
+
+/* ================= MODAL ================= */
+
 function openModal(text){
   const modal = document.getElementById("modal");
   const box = document.getElementById("modalBox");
@@ -219,7 +229,8 @@ function closeModal(){
   },250);
 }
 
-// ================= CONTATORE =================
+/* ================= CONTATORE ================= */
+
 function updateCounter(){
   const now = new Date();
   const diff = now - startDate;
@@ -230,11 +241,13 @@ function updateCounter(){
   const mins = Math.floor((s % 3600) / 60);
   const secs = s % 60;
 
-  document.getElementById("counter").innerText =
-    `${days}g ${hours}h ${mins}m ${secs}s ❤️`;
+  counterText = `${days}g ${hours}h ${mins}m ${secs}s ❤️`;
+
+  document.getElementById("counter").innerText = counterText;
 }
 
-// ================= SUSHI =================
+/* ================= SUSHI ================= */
+
 function updateSushi(){
   const now = new Date();
   const day = now.getDate();
@@ -250,7 +263,18 @@ function updateSushi(){
   }
 }
 
-// ================= MESSAGGI =================
+function sushiClick(){
+  const now = new Date();
+  const day = now.getDate();
+
+  openModal(day===2
+    ? "OGGI SUSHI 🍣❤️"
+    : "Mancano ancora giorni al sushi 😋"
+  );
+}
+
+/* ================= MESSAGGI ================= */
+
 const frasi = [
 "Sei la mia casa ❤️",
 "Ogni secondo con te vale ❤️",
@@ -260,22 +284,18 @@ const frasi = [
 ];
 
 function updateMsg(){
-  document.getElementById("msg").innerText =
-  frasi[Math.floor(Math.random()*frasi.length)];
+  currentMsg = frasi[Math.floor(Math.random()*frasi.length)];
+  document.getElementById("msg").innerText = currentMsg;
 }
 
-// ================= BOTTONI =================
+/* ================= BOTTONI ================= */
+
 function loveClick(){
   loveCounter++;
   document.getElementById("loveCount").innerText =
   `Ti amo premuto ${loveCounter} volte ❤️`;
 
   openModal("Ti amo più di tutto ❤️");
-}
-
-function sushiClick(){
-  const day = new Date().getDate();
-  openModal(day===2 ? "OGGI SUSHI 🍣❤️" : "Non ancora sushi day 😋");
 }
 
 function gift(){
@@ -298,7 +318,8 @@ function secret(){
   openModal(msgs[Math.floor(Math.random()*msgs.length)]);
 }
 
-// ================= INIT =================
+/* ================= INIT ================= */
+
 updateCounter();
 updateSushi();
 updateMsg();
