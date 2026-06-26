@@ -29,6 +29,8 @@ body{
 
 .grid{display:grid;gap:14px;}
 
+/* ================= IOS TOUCH FEEL ================= */
+
 .card{
   background: rgba(255,255,255,0.06);
   border:1px solid rgba(255,255,255,0.12);
@@ -36,11 +38,18 @@ body{
   padding:16px;
   backdrop-filter: blur(12px);
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
-  transition:0.2s;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  cursor:pointer;
+  will-change: transform;
 }
 
-.card:active{transform:scale(0.97);}
+.card:active{
+  transform: scale(0.97) translateY(2px);
+  filter: brightness(1.15);
+  box-shadow:0 5px 18px rgba(0,0,0,0.6);
+}
 
+/* bottoni */
 button{
   margin:5px;
   padding:10px 12px;
@@ -48,6 +57,12 @@ button{
   border:none;
   background: rgba(255,255,255,0.12);
   color:white;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+button:active{
+  transform: scale(0.95);
+  filter: brightness(1.2);
 }
 
 /* bottom bar */
@@ -85,7 +100,7 @@ button{
 
 <body>
 
-<!-- PAGES -->
+<!-- HOME -->
 <div class="page active" id="home">
 
 <div class="container">
@@ -116,7 +131,7 @@ button{
 
 </div>
 
-<!-- SUSHI PAGE -->
+<!-- SUSHI -->
 <div class="page" id="sushi">
 <div class="container">
 <div class="header">🍣 Sushi Day</div>
@@ -158,13 +173,14 @@ function updateCounter(){
   const days = Math.floor(s/86400);
   const h = Math.floor((s%86400)/3600);
   const m = Math.floor((s%3600)/60);
+
   document.getElementById("counter").innerText =
   `${days}g ${h}h ${m}m`;
 }
 
-/* msg */
+/* msg FIXED */
 function updateMsg(){
-  document.getElementById("msg") =
+  document.getElementById("msg").innerText =
   frasi[Math.floor(Math.random()*frasi.length)];
 }
 
@@ -174,25 +190,25 @@ function show(id){
   document.getElementById(id).classList.add("active");
 }
 
-/* sushi */
+/* sushi FIXED */
 function updateSushi(){
   const now = new Date();
   const day = now.getDate();
 
   if(day===2){
     document.getElementById("sushiText").innerText="OGGI SUSHI 🍣❤️";
-  }else{
+  } else {
     let next = new Date(now.getFullYear(),now.getMonth(),2);
     if(day>2) next = new Date(now.getFullYear(),now.getMonth()+1,2);
 
     let diff = Math.ceil((next-now)/86400000);
-    document.getElementById("sushiText")="Mancano "+diff+" giorni";
+    document.getElementById("sushiText").innerText="Mancano "+diff+" giorni";
   }
 }
 
-/* love + hearts */
+/* LOVE (no overflow fix) */
 function love(){
-  for(let i=0;i<8;i++){
+  for(let i=0;i<6;i++){
     let h=document.createElement("div");
     h.className="heart-float";
     h.innerText="❤️";
@@ -202,7 +218,7 @@ function love(){
   }
 }
 
-/* music (fake toggle) */
+/* music */
 function music(){
   musicOn=!musicOn;
   alert(musicOn?"Musica ON 🎵":"Musica OFF");
@@ -211,11 +227,8 @@ function music(){
 /* secret */
 function check(){
   let val=document.getElementById("code").value;
-  if(val==="02032024"){
-    document.getElementById("secretMsg").innerText="❤️ corretto ❤️";
-  }else{
-    document.getElementById("secretMsg").innerText="sbagliato";
-  }
+  document.getElementById("secretMsg").innerText =
+  (val==="02032024") ? "❤️ corretto ❤️" : "sbagliato";
 }
 
 /* init */
