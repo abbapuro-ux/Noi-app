@@ -4,43 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Noi ❤️</title>
+
 <style>
 body{
   margin:0;
-  font-family: Arial;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(135deg,#ff9a9e,#fad0c4);
   color:white;
   text-align:center;
 }
+
 .container{
   padding:40px;
 }
+
 h1{
-  font-size:40px;
+  font-size:38px;
 }
+
 .card{
   background: rgba(255,255,255,0.2);
   padding:20px;
   margin:20px;
   border-radius:20px;
+  backdrop-filter: blur(10px);
+}
+
+.big{
+  font-size:30px;
+  font-weight:bold;
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 <h1>❤️ Edoardo & Giada ❤️</h1>
 
 <div class="card">
-<h2>Il nostro amore</h2>
-<p>Questa è la nostra piccola app ❤️</p>
+<h2>Stiamo insieme da</h2>
+<div class="big" id="days"></div>
+<p>dal 2 marzo 2024</p>
 </div>
 
 <div class="card">
-<h2>Messaggio</h2>
-<p>Ti amo ❤️</p>
+<h2>Ci frequentiamo dal</h2>
+<p>14 gennaio 2024</p>
 </div>
 
+<div class="card">
+<h2>Messaggio per te</h2>
+<p id="msg"></p>
 </div>
+</div>
+
+<script>
+// DATA INIZIO RELAZIONE
+const startDate = new Date("2024-03-02");
+
+// calcolo giorni
+const today = new Date();
+const diffTime = today - startDate;
+const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+document.getElementById("days").innerText = diffDays + " giorni ❤️";
+
+// frasi random
+const frasi = [
+"Ti amo più di ieri ❤️",
+"Sei la mia persona preferita ❤️",
+"Con te è tutto più bello ❤️",
+"Non mi stanco mai di te ❤️",
+"Ogni giorno con te vale ❤️"
+];
+
+document.getElementById("msg").innerText =
+frasi[Math.floor(Math.random()*frasi.length)];
+</script>
+
 </body>
 </html>
