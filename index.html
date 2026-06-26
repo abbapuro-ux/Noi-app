@@ -8,63 +8,78 @@
 <style>
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background: radial-gradient(circle at top, #111827, #0b1220);
   color:white;
   text-align:center;
 }
 
 .container{
-  padding:30px;
-  max-width:500px;
+  max-width:520px;
   margin:auto;
+  padding:25px;
 }
 
-h1{
-  font-size:34px;
-  margin-bottom:10px;
+.header{
+  font-size:30px;
+  font-weight:700;
+  margin-top:10px;
 }
 
-.subtitle{
-  opacity:0.7;
-  font-size:14px;
-  margin-bottom:25px;
+.sub{
+  opacity:0.6;
+  font-size:13px;
+  margin-bottom:20px;
 }
 
 .grid{
   display:grid;
-  gap:15px;
+  gap:14px;
 }
 
 .card{
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
   border-radius:18px;
-  padding:18px;
+  padding:16px;
   backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
 .big{
-  font-size:28px;
+  font-size:22px;
   font-weight:600;
-  margin-top:5px;
+  margin-top:6px;
 }
 
 .small{
-  opacity:0.7;
-  font-size:13px;
+  font-size:12px;
+  opacity:0.6;
 }
 
 .heart{
   font-size:28px;
-  animation: pulse 1.5s infinite;
+  animation:pulse 1.5s infinite;
 }
 
 @keyframes pulse{
   0%{transform:scale(1);}
   50%{transform:scale(1.2);}
   100%{transform:scale(1);}
+}
+
+button{
+  margin:5px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:none;
+  background: rgba(255,255,255,0.12);
+  color:white;
+  font-weight:600;
+}
+
+button:active{
+  transform:scale(0.97);
 }
 </style>
 </head>
@@ -74,24 +89,45 @@ h1{
 <div class="container">
 
 <div class="heart">❤️</div>
-<h1>Edoardo & Giada</h1>
-<div class="subtitle">Un amore in tempo reale</div>
+<div class="header">Edoardo & Giada</div>
+<div class="sub">la nostra piccola app privata</div>
 
 <div class="grid">
 
+<!-- CONTATORE -->
 <div class="card">
-<div class="small">Stiamo insieme da (2 marzo 2024)</div>
+<div class="small">💞 Insieme dal 2 marzo 2024</div>
 <div class="big" id="counter"></div>
 </div>
 
+<!-- FREQUENTAZIONE -->
 <div class="card">
-<div class="small">Ci frequentiamo dal (14 gennaio 2024)</div>
-<div class="big">💞 Sempre più vicini</div>
+<div class="small">💌 Ci frequentiamo dal 14 gennaio 2024</div>
+<div class="big">Sempre più vicini ❤️</div>
 </div>
 
+<!-- SUSHI -->
 <div class="card">
-<div class="small">Messaggio per te</div>
+<div class="small">🍣 Sushi Day (ogni 2 del mese)</div>
+<div class="big" id="sushi"></div>
+</div>
+
+<!-- MESSAGGIO -->
+<div class="card">
+<div class="small">💭 Messaggio per te</div>
 <div class="big" id="msg"></div>
+</div>
+
+<!-- INTERAZIONE -->
+<div class="card">
+<div class="small">🎮 Interazioni</div>
+
+<button onclick="loveClick()">Ti amo ❤️</button>
+<button onclick="sushiClick()">Sushi 🍣</button>
+<button onclick="gift()">Regalo 🎁</button>
+<button onclick="secret()">Messaggio 💌</button>
+
+<div class="small" id="loveCount"></div>
 </div>
 
 </div>
@@ -99,39 +135,95 @@ h1{
 
 <script>
 
-// DATA INIZIO RELAZIONE
 const startDate = new Date("2024-03-02");
+let loveCounter = 0;
 
+// CONTATORE LIVE
 function updateCounter(){
-
   const now = new Date();
   const diff = now - startDate;
 
-  const totalSeconds = Math.floor(diff / 1000);
-
-  const days = Math.floor(totalSeconds / (3600 * 24));
-  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+  const s = Math.floor(diff / 1000);
+  const days = Math.floor(s / 86400);
+  const hours = Math.floor((s % 86400) / 3600);
+  const mins = Math.floor((s % 3600) / 60);
+  const secs = s % 60;
 
   document.getElementById("counter").innerText =
-    `${days}g ${hours}h ${minutes}m ${seconds}s ❤️`;
+    `${days}g ${hours}h ${mins}m ${secs}s ❤️`;
 }
 
-updateCounter();
-setInterval(updateCounter, 1000);
+// SUSHI DAY
+function updateSushi(){
+  const now = new Date();
+  const day = now.getDate();
 
-// frasi random
+  if(day === 2){
+    document.getElementById("sushi").innerText = "OGGI SUSHI 🍣❤️";
+  } else {
+    let next = new Date(now.getFullYear(), now.getMonth(), 2);
+    if(day > 2) next = new Date(now.getFullYear(), now.getMonth()+1, 2);
+
+    const diff = Math.ceil((next-now)/(1000*60*60*24));
+    document.getElementById("sushi").innerText = `Mancano ${diff} giorni 🍣`;
+  }
+}
+
+// MESSAGGI
 const frasi = [
-"Sei la mia persona preferita ❤️",
-"Con te tutto ha senso ❤️",
+"Sei la mia casa ❤️",
 "Ogni secondo con te vale ❤️",
 "Ti sceglierei sempre ❤️",
-"Sei casa ❤️"
+"Non smetto mai di pensarti ❤️",
+"Sei la cosa più bella ❤️"
 ];
 
-document.getElementById("msg").innerText =
-frasi[Math.floor(Math.random()*frasi.length)];
+function updateMsg(){
+  document.getElementById("msg").innerText =
+  frasi[Math.floor(Math.random()*frasi.length)];
+}
+
+// BOTTONI
+function loveClick(){
+  loveCounter++;
+  document.getElementById("loveCount").innerText =
+  `Ti amo premuto ${loveCounter} volte ❤️`;
+
+  alert("Ti amo più di tutto ❤️");
+}
+
+function sushiClick(){
+  const day = new Date().getDate();
+  alert(day===2 ? "OGGI SUSHI 🍣❤️" : "Non ancora sushi day 😋");
+}
+
+function gift(){
+  const gifts = [
+    "Ti amo più di ieri ❤️",
+    "Sei il mio regalo ❤️",
+    "Non cambierei noi ❤️",
+    "Sei perfetta per me ❤️"
+  ];
+  alert(gifts[Math.floor(Math.random()*gifts.length)]);
+}
+
+function secret(){
+  const msgs = [
+    "Sei tutto per me ❤️",
+    "Non smetterò mai di sceglierti ❤️",
+    "Con te è tutto più bello ❤️",
+    "Ti amo davvero tanto ❤️"
+  ];
+  alert(msgs[Math.floor(Math.random()*msgs.length)]);
+}
+
+// INIT
+updateCounter();
+updateSushi();
+updateMsg();
+
+setInterval(updateCounter,1000);
+setInterval(updateSushi,60000);
 
 </script>
 
